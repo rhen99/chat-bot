@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 const {
   cancelTournament,
+  closeMatch,
   createTournament,
   getTournamentStatus,
   startTournament,
@@ -21,7 +22,14 @@ module.exports = {
       .setDescription('Cancel the active tournament.'))
     .addSubcommand((subcommand) => subcommand
       .setName('start')
-      .setDescription('Start the active tournament.')),
+      .setDescription('Start the active tournament.'))
+    .addSubcommand((subcommand) => subcommand
+      .setName('close-match')
+      .setDescription('Close an active tournament match.')
+      .addStringOption((option) => option
+        .setName('match_id')
+        .setDescription('The match ID to close.')
+        .setRequired(true))),
 
   async execute(interaction) {
     const subcommand = interaction.options.getSubcommand();
@@ -43,7 +51,16 @@ module.exports = {
     }
 
     if (subcommand === 'start') {
-      await interaction.reply(startTournament(channelId));
+      await interaction.deferReply();
+      await interaction.editReply(await startTournament(channelId, interaction.channel));
+      return;
+    }
+
+    if (subcommand === 'close-match') {
+      const matchId = interaction.options.getString('match_id', true);
+
+      await interaction.deferReply();
+      await interaction.editReply(await closeMatch(channelId, matchId, interaction.channel));
     }
   },
 };

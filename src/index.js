@@ -4,6 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const messageCreate = require('./events/messageCreate');
+const { handleVoteButton } = require('./tournament/service');
 
 const { DISCORD_TOKEN } = process.env;
 
@@ -53,10 +54,7 @@ client.on('interactionCreate', async (interaction) => {
     }
 
     if (interaction.isButton()) {
-      await interaction.reply({
-        content: 'Button handling is not implemented yet.',
-        ephemeral: true,
-      });
+      await handleVoteButton(interaction);
     }
   } catch (error) {
     console.error(error);

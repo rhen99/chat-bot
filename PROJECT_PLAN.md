@@ -220,23 +220,28 @@ Completed:
 - Added `/tournament create`, `/tournament status`, `/tournament cancel`, and `/tournament start`.
 - Added an in-memory active tournament store keyed by channel.
 - Added image attachment collection from normal Discord messages during collection status.
+- Added first-version 4-image tournament start flow.
+- Added 2 semifinal poll messages with `Vote A` and `Vote B` buttons.
+- Added one-vote-per-user-per-match in-memory vote tracking.
+- Added `/tournament close-match match_id` for manual match closing.
+- Added semifinal winner advancement into a final poll.
+- Added final winner announcement and active tournament cleanup.
 
 Current implementation limits:
 
-- `/tournament start` is still a placeholder.
-- Bracket generation is not implemented yet.
-- Button voting is not implemented yet.
-- Winner advancement and champion announcement are not implemented yet.
+- First version only supports exactly 4 image entries.
+- Match closing is manual with `/tournament close-match match_id`.
+- Tied matches cannot close yet; tie-breaker handling is not implemented.
+- Bracket generation only supports the fixed 2-semifinal plus final flow.
 - Bracket image rendering and SQLite persistence are intentionally deferred.
 
 Next recommended milestone:
 
-1. Limit the first version to exactly 4 image entries.
-2. Generate 2 semifinal matches on `/tournament start`.
-3. Post simple match messages with `Vote A` and `Vote B` buttons.
-4. Track one vote per user per match.
-5. Advance semifinal winners into a final match.
-6. Announce the champion.
+1. Test the full 4-image flow in Discord end-to-end.
+2. Add a tie-breaker path for tied matches.
+3. Add creator-only permissions for start, cancel, and close-match.
+4. Improve match messages with embeds or image previews.
+5. Expand from exactly 4 images to 8 images.
 
 ## Resume Prompt
 
