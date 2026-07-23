@@ -226,22 +226,32 @@ Completed:
 - Added `/tournament close-match match_id` for manual match closing.
 - Added semifinal winner advancement into a final poll.
 - Added final winner announcement and active tournament cleanup.
+- Added `/tournament tiebreak match_id` for resolving tied matches via best-of-3 coinflip.
+- Added match poll embeds with side-by-side images and live vote counts.
+- Vote buttons disable when a match closes.
 
 Current implementation limits:
 
 - First version only supports exactly 4 image entries.
 - Match closing is manual with `/tournament close-match match_id`.
-- Tied matches cannot close yet; tie-breaker handling is not implemented.
 - Bracket generation only supports the fixed 2-semifinal plus final flow.
 - Bracket image rendering and SQLite persistence are intentionally deferred.
 
 Next recommended milestone:
 
 1. Test the full 4-image flow in Discord end-to-end.
-2. Add a tie-breaker path for tied matches.
-3. Add creator-only permissions for start, cancel, and close-match.
-4. Improve match messages with embeds or image previews.
-5. Expand from exactly 4 images to 8 images.
+2. Add creator-only permissions for start, cancel, and close-match.
+3. Expand from exactly 4 images to 8 images.
+
+## Tie-Breaker Command
+
+When a match is tied after `/tournament close-match`, any user can run `/tournament tiebreak match_id` to resolve it.
+
+- Command: `/tournament tiebreak match_id`
+- The match must be tied (equal votes for both entries).
+- The bot does best-of-3 coinflips (first to 2 wins).
+- The bot announces each coinflip result and the final winner.
+- The match is then closed with that winner set, same as a normal close.
 
 ## Resume Prompt
 

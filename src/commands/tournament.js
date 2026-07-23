@@ -5,6 +5,7 @@ const {
   createTournament,
   getTournamentStatus,
   startTournament,
+  tiebreakMatch,
 } = require('../tournament/service');
 
 module.exports = {
@@ -29,6 +30,13 @@ module.exports = {
       .addStringOption((option) => option
         .setName('match_id')
         .setDescription('The match ID to close.')
+        .setRequired(true)))
+    .addSubcommand((subcommand) => subcommand
+      .setName('tiebreak')
+      .setDescription('Resolve a tied match with a best-of-3 coinflip.')
+      .addStringOption((option) => option
+        .setName('match_id')
+        .setDescription('The tied match ID to resolve.')
         .setRequired(true))),
 
   async execute(interaction) {
@@ -61,6 +69,13 @@ module.exports = {
 
       await interaction.deferReply();
       await interaction.editReply(await closeMatch(channelId, matchId, interaction.channel));
+    }
+
+    if (subcommand === 'tiebreak') {
+      const matchId = interaction.options.getString('match_id', true);
+
+      await interaction.deferReply();
+      await interaction.editReply(await tiebreakMatch(channelId, matchId, interaction.channel));
     }
   },
 };
